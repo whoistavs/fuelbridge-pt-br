@@ -1,0 +1,45 @@
+# FuelBridge PT-BR - mapeamento de combustiveis entre DGEG (PT) e ANP (BR)
+# Cada documento YAML (separado por ---) e lido como uma linha pelo step YAML Input do Pentaho.
+# Usado na t_comparacao para dar um codigo comum aos combustiveis dos dois paises.
+# comparavel: N = o combustivel so existe num dos paises e fica fora da comparacao.
+# preco_min_eur / preco_max_eur = limites de validacao do preco final em euros.
+---
+id: GASOLINA_95
+descricao: Gasolina comum / simples
+pt_dgeg: Gasolina simples 95
+br_anp: GASOLINA
+comparavel: S
+preco_min_eur: 0.50
+preco_max_eur: 5.00
+---
+id: DIESEL
+descricao: Gasoleo rodoviario comum
+pt_dgeg: Gasóleo simples
+br_anp: DIESEL S10
+comparavel: S
+preco_min_eur: 0.50
+preco_max_eur: 5.00
+---
+id: GASOLINA_ADITIVADA
+descricao: Gasolina premium / aditivada
+pt_dgeg: Gasolina especial 95
+br_anp: GASOLINA ADITIVADA
+comparavel: S
+preco_min_eur: 0.50
+preco_max_eur: 5.00
+---
+id: ETANOL
+descricao: Etanol hidratado (sem equivalente em Portugal)
+pt_dgeg: "-"
+br_anp: ETANOL
+comparavel: N
+preco_min_eur: 0.50
+preco_max_eur: 5.00
+---
+id: GPL_AUTO
+descricao: GPL automovel (o GLP da ANP e gas de botija P13, nao comparavel)
+pt_dgeg: GPL Auto
+br_anp: "-"
+comparavel: N
+preco_min_eur: 0.50
+preco_max_eur: 5.00

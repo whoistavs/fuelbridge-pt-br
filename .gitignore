@@ -1,0 +1,14 @@
+# Configuração local (palavras-passe ficam no kettle.properties do utilizador)
+kettle.properties
+shared.xml
+
+# Ficheiros temporários do Pentaho, Word e sistema
+*.bak
+*.log
+~$*
+.~lock*
+Thumbs.db
+desktop.ini
+
+# Cópia de segurança local do relatório (o relatório final é entregue à parte)
+doc/

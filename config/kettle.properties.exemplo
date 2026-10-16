@@ -1,0 +1,13 @@
+# Copiar estas linhas para C:\Users\<utilizador>\.kettle\kettle.properties
+# e preencher com os valores de cada máquina. NÃO colocar este ficheiro preenchido no Git.
+
+# Pasta do projeto (sem acentos nem espaços)
+FUELBRIDGE_HOME=C\:/projetos/fuelbridge
+
+# PostgreSQL (base de dados fuelbridge)
+PG_PASS=a_palavra_passe_do_postgres
+
+# Email (Gmail com palavra-passe de aplicação)
+MAIL_USER=remetente@gmail.com
+MAIL_PASS=palavra_passe_de_aplicacao_sem_espacos
+MAIL_TO=destinatario@exemplo.com

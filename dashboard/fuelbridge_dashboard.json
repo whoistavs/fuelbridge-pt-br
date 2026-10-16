@@ -1,0 +1,397 @@
+{
+  "title": "FuelBridge PT-BR",
+  "uid": "fuelbridge-ptbr",
+  "tags": [
+    "fuelbridge",
+    "etl"
+  ],
+  "timezone": "browser",
+  "schemaVersion": 39,
+  "version": 3,
+  "editable": true,
+  "time": {
+    "from": "now-120d",
+    "to": "now"
+  },
+  "refresh": "",
+  "panels": [
+    {
+      "id": 1,
+      "type": "stat",
+      "title": "Quanto mais caro em Portugal (%)",
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "bg1c0yhazaneob"
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 8,
+        "x": 0,
+        "y": 0
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "bg1c0yhazaneob"
+          },
+          "rawQuery": true,
+          "editorMode": "code",
+          "format": "table",
+          "rawSql": "SELECT\n  MAX(CASE WHEN combustivel_id = 'DIESEL' THEN dif_pct END)      AS \"Gasóleo\",\n  MAX(CASE WHEN combustivel_id = 'GASOLINA_95' THEN dif_pct END) AS \"Gasolina 95\"\nFROM v_comparacao_atual;"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "decimals": 1,
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "red"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "value",
+        "graphMode": "none",
+        "textMode": "value_and_name",
+        "orientation": "horizontal",
+        "justifyMode": "auto"
+      }
+    },
+    {
+      "id": 2,
+      "type": "stat",
+      "title": "Registos carregados",
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "bg1c0yhazaneob"
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 8,
+        "x": 8,
+        "y": 0
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "bg1c0yhazaneob"
+          },
+          "rawQuery": true,
+          "editorMode": "code",
+          "format": "table",
+          "rawSql": "SELECT\n  COUNT(*) FILTER (WHERE pais = 'PT') AS \"Portugal (DGEG)\",\n  COUNT(*) FILTER (WHERE pais = 'BR') AS \"Brasil (ANP)\"\nFROM fato_precos;"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "locale",
+          "decimals": 0,
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "blue"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "value",
+        "graphMode": "none",
+        "textMode": "value_and_name",
+        "orientation": "horizontal",
+        "justifyMode": "auto"
+      }
+    },
+    {
+      "id": 3,
+      "type": "stat",
+      "title": "Última execução do ETL",
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "bg1c0yhazaneob"
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 8,
+        "x": 16,
+        "y": 0
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "bg1c0yhazaneob"
+          },
+          "rawQuery": true,
+          "editorMode": "code",
+          "format": "table",
+          "rawSql": "SELECT to_char(MAX(executado_em), 'DD/MM/YYYY HH24:MI') AS \"Executado em\" FROM comparacao;"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "string",
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "green"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/.*/",
+          "values": false
+        },
+        "colorMode": "value",
+        "graphMode": "none",
+        "textMode": "value",
+        "orientation": "auto",
+        "justifyMode": "auto"
+      }
+    },
+    {
+      "id": 4,
+      "type": "barchart",
+      "title": "Preço médio por litro: Portugal x Brasil (EUR)",
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "bg1c0yhazaneob"
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 0,
+        "y": 6
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "bg1c0yhazaneob"
+          },
+          "rawQuery": true,
+          "editorMode": "code",
+          "format": "table",
+          "rawSql": "SELECT\n  CASE combustivel_id WHEN 'DIESEL' THEN 'Gasóleo' WHEN 'GASOLINA_95' THEN 'Gasolina 95' ELSE combustivel_id END AS \"Combustível\",\n  preco_pt AS \"Portugal\",\n  preco_br AS \"Brasil\"\nFROM v_comparacao_atual\nORDER BY combustivel_id;"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "currencyEUR",
+          "decimals": 3,
+          "color": {
+            "mode": "palette-classic"
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Portugal"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "#1F60C4"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Brasil"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "#37872D"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "xField": "Combustível",
+        "orientation": "auto",
+        "showValue": "always",
+        "groupWidth": 0.7,
+        "barWidth": 0.9,
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "timeseries",
+      "title": "Preço médio semanal (EUR/L)",
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "bg1c0yhazaneob"
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 12,
+        "y": 6
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "bg1c0yhazaneob"
+          },
+          "rawQuery": true,
+          "editorMode": "code",
+          "format": "time_series",
+          "rawSql": "SELECT\n  to_date(ano::text || '-' || semana::text || '-1', 'IYYY-IW-ID')::timestamp AS time,\n  pais || ' - ' || CASE combustivel_id WHEN 'DIESEL' THEN 'Gasóleo' WHEN 'GASOLINA_95' THEN 'Gasolina 95' ELSE combustivel_id END AS metric,\n  preco_medio_eur AS value\nFROM v_preco_semanal\nWHERE combustivel_id IN ('DIESEL', 'GASOLINA_95')\nORDER BY 1;"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "currencyEUR",
+          "decimals": 3,
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 2,
+            "pointSize": 6,
+            "showPoints": "always",
+            "spanNulls": true
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "table",
+      "title": "Histórico das comparações",
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "bg1c0yhazaneob"
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 24,
+        "x": 0,
+        "y": 16
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "bg1c0yhazaneob"
+          },
+          "rawQuery": true,
+          "editorMode": "code",
+          "format": "table",
+          "rawSql": "SELECT\n  to_char(executado_em, 'DD/MM/YYYY HH24:MI:SS') AS \"Executado em\",\n  CASE combustivel_id WHEN 'DIESEL' THEN 'Gasóleo' WHEN 'GASOLINA_95' THEN 'Gasolina 95' ELSE combustivel_id END AS \"Combustível\",\n  preco_pt AS \"Preço PT (EUR)\",\n  preco_br AS \"Preço BR (EUR)\",\n  n_pt AS \"Postos PT\",\n  n_br AS \"Registos BR\",\n  dif_eur AS \"Diferença (EUR)\",\n  dif_pct AS \"Diferença (%)\",\n  razao AS \"Razão PT/BR\"\nFROM comparacao\nORDER BY executado_em DESC, combustivel_id\nLIMIT 50;"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "decimals": 3
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Diferença (%)"
+            },
+            "properties": [
+              {
+                "id": "decimals",
+                "value": 2
+              },
+              {
+                "id": "unit",
+                "value": "percent"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Postos PT"
+            },
+            "properties": [
+              {
+                "id": "decimals",
+                "value": 0
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Registos BR"
+            },
+            "properties": [
+              {
+                "id": "decimals",
+                "value": 0
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "showHeader": true
+      }
+    }
+  ],
+  "templating": {
+    "list": []
+  },
+  "annotations": {
+    "list": []
+  }
+}
