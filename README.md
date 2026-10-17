@@ -5,6 +5,8 @@ Processo ETL em **Pentaho Data Integration** que compara o preço dos combustív
 Trabalho Prático 1 da unidade curricular **Integração de Sistemas de Informação** (LESI, UPCA, 2026/2027).
 Autor: Octavio Rodrigues Schwab (n.º 51239).
 
+🎬 **Vídeo de demonstração:** https://youtu.be/M-EJvvEhq00
+
 ## Fontes de dados
 
 | Fonte | Formato | Conteúdo |
@@ -18,6 +20,7 @@ Autor: Octavio Rodrigues Schwab (n.º 51239).
 
 ```
 config/      mapeamento.yaml e exemplo do kettle.properties
+imagens/     capturas de ecrã usadas neste README
 dashboard/   dashboard do Grafana (importar o JSON)
 data/
   input/     dados brutos (DGEG, ANP, BCE)
@@ -38,6 +41,8 @@ sql/         schema.sql (tabelas e vistas do PostgreSQL)
 4. `t_comparacao.ktr`: junta tudo, converte para euros, valida, calcula a diferença PT x BR e carrega o PostgreSQL.
 5. Envia por email o `comparacao.csv` em anexo. Se alguma transformação falhar, envia um email de erro e aborta.
 
+![Job principal no Spoon](imagens/job.png)
+
 ## Como executar
 
 1. Instalar o Pentaho Data Integration 10.2 e o PostgreSQL.
@@ -53,3 +58,5 @@ sql/         schema.sql (tabelas e vistas do PostgreSQL)
 |---|---|---|---|
 | Gasóleo | 2,199 | 1,220 | +80,2% |
 | Gasolina 95 | 2,109 | 1,111 | +89,8% |
+
+![Dashboard no Grafana](imagens/dashboard.png)

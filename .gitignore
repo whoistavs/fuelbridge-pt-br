@@ -12,3 +12,6 @@ desktop.ini
 
 # Cópia de segurança local do relatório (o relatório final é entregue à parte)
 doc/
+
+# Notas de trabalho pessoais (não fazem parte da entrega)
+PROGRESSO.md
